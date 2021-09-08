@@ -1,0 +1,23 @@
+
+.Registration, .Login {
+    text-align: center;
+  }
+  
+  .registration, .login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  input {
+    margin: 0 auto;
+    width: 250px;
+    height: auto;
+  }
+
+  h1 {
+    margin: 25px;
+  }
+  
+  
