@@ -6,6 +6,12 @@ module.exports = new Sequelize(process.env.POSTGRES_DB, process.env.POSTGRES_USE
     dialect:'postgres',
     define: {
         timestamps: false
-    }
+    },
+    pool: {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
+      }
   });
   

@@ -12,13 +12,14 @@ function Registration() {
     const [passwordReg, setPasswordReg] = useState('');
 
     const register = () => {
-        axios.post('http://localhost:3001/api/register', {
+        axios.post('http://localhost:3001/registration', {
           username: userNameReg,
           email: emailReg, 
           password: passwordReg
         }).then((response)=> {
           console.log(response);
-          alert(response.data)
+          alert(response.data);
+          window.location.href = "/login";
         });
       };
 
