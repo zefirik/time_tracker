@@ -16,7 +16,7 @@ function Login() {
   const token = localStorage.getItem('token');
 
   const login = () => {
-    axios.post('http://localhost:3001/api/login', {
+    axios.post('http://localhost:3001/auth/login', {
       email: emailLogin, 
       password: passwordLogin
     }).then((response)=> {
@@ -51,7 +51,7 @@ const logout = () => {
         </FloatingLabel>
         
         {(localStorage.getItem("token") === null) ? <Button variant="outline-primary" className="my-3" onClick={login}>Login</Button> : <Button variant="outline-primary" className="my-3" onClick={logout}>LogOUT</Button>}
-        <Link to='/registration'>
+        <Link to='/auth/registration'>
           <label>Registration</label>
         </Link>
       </div>

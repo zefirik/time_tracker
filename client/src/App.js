@@ -18,8 +18,8 @@ function App() {
           <Route path='/' exact component={Home} />
           <Route path='/reports' component={Reports} />
           <Route path='/products' component={Products} />
-          <Route path='/login' component={Login} />
-          <Route path='/registration' component={Registration} />
+          <Route path='/auth/login' component={Login} />
+          <Route path='/auth/registration' component={Registration} />
         </Switch>
       </Router>
     </>

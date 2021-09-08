@@ -19,10 +19,10 @@ function Navbar() {
             <FaIcons.FaBars onClick={showSidebar} />
           </Link>
           <div className="nav-auth">
-          <Link to='/login'>
+          <Link to='/auth/login'>
             <button >Login</button>
           </Link>
-          <Link to='/registration'>
+          <Link to='/auth/registration'>
           <button>Registration</button>
           </Link>
           </div>
