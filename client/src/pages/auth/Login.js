@@ -51,8 +51,9 @@ const logout = () => {
         <Link to='/auth/registration'>
           <label>Registration</label>
         </Link>
-      </div>
         <h2>{loginStatus}</h2>
+      </div>
+       
     
     </>
   );
