@@ -13,30 +13,27 @@ function Login() {
   const [passwordLogin, setPasswordLogin] = useState('');
  
   const [loginStatus, setLoginStatus] = useState('');
-  const token = localStorage.getItem('token');
+  //const token = localStorage.getItem('token');
 
   const login = () => {
     axios.post('http://localhost:3001/auth/login', {
       email: emailLogin, 
       password: passwordLogin
     }).then((response)=> {
+      console.log(response);
       if(response.data.message){
         setLoginStatus(response.data.message)
       }else{
         localStorage.setItem("token",response.data.token);
-        //setUserId(response.data.result.rows[0].id);
-        console.log(response.data);
-        if(response.data.result.rows[0].role === 1)
-        {setLoginStatus(`Hello ${response.data.result.rows[0].username}! You are Admin`);
-        }else{
-        setLoginStatus(`Hello ${response.data.result.rows[0].username}! You are User`);}
+        //console.log(response.data);
+        setLoginStatus(`Hello ${response.data.result.username}!`); 
     };
   });
 };
 
 const logout = () => {
   localStorage.removeItem('token');
-  setLoginStatus(false)
+  setLoginStatus(null);
 };
 
   return (
