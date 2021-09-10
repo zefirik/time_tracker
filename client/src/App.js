@@ -10,20 +10,30 @@ import Login from './pages/auth/Login';
 import Registration from './pages/auth/Registration';
 import GuardedRoute from './middlewares/GuardedRoute';
 
+
+
 function App() {
   const [isLogin, setIsLogin] = useState('');
+  //console.log(isLogin);
   //const [userData, setUserData] = useState();
   const[isAutheticated, setisAutheticated] = useState();
-  
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    setIsLogin(false);
+    setisAutheticated(false);
+  };
+
+
   return (
     <>
       <Router>
-        <Navbar isLogin={isLogin}/>
+        <Navbar isLogin={isLogin} logout={logout}/>
         <Switch>
           <Route path='/' exact component={Home} />
           <GuardedRoute path='/user/reports' component={Reports} auth={isAutheticated}/>
           <GuardedRoute path='/user/time' component={Time} auth={isAutheticated}/>
-          <Route path='/auth/login' component={() => <Login setIsLogin={setIsLogin} setisAutheticated={setisAutheticated}/> } />
+          <Route path='/auth/login' component={() => <Login setIsLogin={setIsLogin} setisAutheticated={setisAutheticated} logout={logout}/> } />
           <Route path='/auth/registration' component={Registration} />
         </Switch>
       </Router>

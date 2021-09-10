@@ -7,7 +7,7 @@ import {FloatingLabel,
         Button} from 'react-bootstrap';
 
 
-function Login({setIsLogin,setisAutheticated}) {
+function Login({setIsLogin,setisAutheticated, logout}) {
   
   const [emailLogin, setEmailLogin] = useState('');
   const [passwordLogin, setPasswordLogin] = useState('');
@@ -33,12 +33,7 @@ function Login({setIsLogin,setisAutheticated}) {
   });
 };
 
-const logout = () => {
-  localStorage.removeItem('token');
-  setLoginStatus(null);
-  setIsLogin(false);
-  setisAutheticated(false);
-};
+
 
   return (
     <>

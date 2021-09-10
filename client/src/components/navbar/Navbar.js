@@ -6,7 +6,7 @@ import { SidebarData } from './SidebarData';
 import './Navbar.css';
 import { IconContext } from 'react-icons';
 
-function Navbar({isLogin}) {
+function Navbar({isLogin, logout}) {
   const [sidebar, setSidebar] = useState(false);
 
   const showSidebar = () => setSidebar(!sidebar);
@@ -22,7 +22,7 @@ function Navbar({isLogin}) {
 
             {isLogin ? <><Link to='/user/reports'><button>{isLogin}</button> </Link>
             <Link to='/auth/login'>
-            <button >To Logout</button>
+            <button onClick={logout}>Logout</button>
           </Link></>
             : <>
             <Link to='/auth/login'>
