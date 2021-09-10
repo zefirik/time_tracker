@@ -6,11 +6,11 @@ import { SidebarData } from './SidebarData';
 import './Navbar.css';
 import { IconContext } from 'react-icons';
 
-function Navbar() {
+function Navbar({isLogin}) {
   const [sidebar, setSidebar] = useState(false);
 
   const showSidebar = () => setSidebar(!sidebar);
-
+ 
   return (
     <>
       <IconContext.Provider value={{ color: '#fff' }}>
@@ -19,12 +19,19 @@ function Navbar() {
             <FaIcons.FaBars onClick={showSidebar} />
           </Link>
           <div className="nav-auth">
-          <Link to='/auth/login'>
+
+            {isLogin ? <><Link to='/user/reports'><button>{isLogin}</button> </Link>
+            <Link to='/auth/login'>
+            <button >To Logout</button>
+          </Link></>
+            : <>
+            <Link to='/auth/login'>
             <button >Login</button>
           </Link>
           <Link to='/auth/registration'>
           <button>Registration</button>
-          </Link>
+          </Link></>}
+      
           </div>
         </div>
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>

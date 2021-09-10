@@ -28,7 +28,7 @@ module.exports.login = (req, res) => {
             email: email }
     })
     .then(user => {
-        console.log("TEST1",user);
+        //console.log("TEST1",user);
         if (!user) {
           res.send({ message: "User Not found." });
         }else{

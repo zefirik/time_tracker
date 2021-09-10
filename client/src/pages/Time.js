@@ -1,11 +1,11 @@
 import React from 'react';
 
-function Products() {
+function Time() {
   return (
     <div className='products'>
-      <h1>Products</h1>
+      <h1>Time</h1>
     </div>
   );
 }
 
-export default Products;
+export default Time;

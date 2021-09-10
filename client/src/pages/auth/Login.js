@@ -7,7 +7,7 @@ import {FloatingLabel,
         Button} from 'react-bootstrap';
 
 
-function Login() {
+function Login({setIsLogin}) {
   
   const [emailLogin, setEmailLogin] = useState('');
   const [passwordLogin, setPasswordLogin] = useState('');
@@ -26,7 +26,8 @@ function Login() {
       }else{
         localStorage.setItem("token",response.data.token);
         //console.log(response.data);
-        setLoginStatus(`Hello ${response.data.result.username}!`); 
+        setLoginStatus(`Hello ${response.data.result.username}!`);
+        setIsLogin(response.data.result.username);
     };
   });
 };
@@ -34,6 +35,7 @@ function Login() {
 const logout = () => {
   localStorage.removeItem('token');
   setLoginStatus(null);
+  setIsLogin(false);
 };
 
   return (
