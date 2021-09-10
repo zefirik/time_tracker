@@ -8,19 +8,22 @@ import Time from './pages/Time';
 import Reports from './pages/Reports';
 import Login from './pages/auth/Login';
 import Registration from './pages/auth/Registration';
+import GuardedRoute from './middlewares/GuardedRoute';
 
 function App() {
   const [isLogin, setIsLogin] = useState('');
   //const [userData, setUserData] = useState();
+  const[isAutheticated, setisAutheticated] = useState();
+  
   return (
     <>
       <Router>
         <Navbar isLogin={isLogin}/>
         <Switch>
           <Route path='/' exact component={Home} />
-          <Route path='/user/reports' component={Reports} />
-          <Route path='/user/time' component={Time} />
-          <Route path='/auth/login' component={() => <Login setIsLogin={setIsLogin}/> } />
+          <GuardedRoute path='/user/reports' component={Reports} auth={isAutheticated}/>
+          <GuardedRoute path='/user/time' component={Time} auth={isAutheticated}/>
+          <Route path='/auth/login' component={() => <Login setIsLogin={setIsLogin} setisAutheticated={setisAutheticated}/> } />
           <Route path='/auth/registration' component={Registration} />
         </Switch>
       </Router>
