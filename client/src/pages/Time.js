@@ -5,14 +5,14 @@ import {FloatingLabel,
         Form} from 'react-bootstrap';
 
 const Timer = () => {
-  const token = localStorage.getItem('token');
+  const userId = localStorage.getItem('userID');
   const [second, setSecond] = useState("00");
   const [minute, setMinute] = useState("00");
   const [hour, setHour] = useState("00");
   const [isActive, setIsActive] = useState(false);
   const [counter, setCounter] = useState(0);
   const [operation, setOperation] = useState('')
-  let AllTimeSecond = (hour * (60 * 60))+ ( minute * 60) + second; 
+  let AllTimeSecond = +((hour * (60 * 60))+ ( minute * 60) + second); 
 
   useEffect(() => {
     let intervalId;
@@ -63,7 +63,7 @@ const Timer = () => {
     setOperation('');
     document.getElementById('myInput').value = '';
     console.log("RESET",`${operation} continue ${hour} : ${minute} : ${second}`);
-    console.log(AllTimeSecond);
+    console.log(AllTimeSecond)
     sendData();
   }
 
@@ -71,11 +71,11 @@ const Timer = () => {
   const sendData = () => {
     axios.post('http://localhost:3001/user/time/send', {
       operation: operation,
-      time: AllTimeSecond
-    },{headers: {'authorization': `Bearer ${token}`}})
+      time: AllTimeSecond,
+      id: userId,
+    })
     .then((response)=> {
       console.log(response);
-      alert(response.data)
     });
   };
 

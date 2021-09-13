@@ -24,8 +24,8 @@ app.listen(PORT, console.log(`Сервер ожидает подключения
 
 
 const authRoutes = require('./routers/auth');
-//const userRoutes = require('./routers/user');
+const userRoutes = require('./routers/user');
 app.use('/auth', authRoutes);
-//app.use('/user', userRoutes);
+app.use('/user', userRoutes);
 
 
