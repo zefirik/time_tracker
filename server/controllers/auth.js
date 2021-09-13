@@ -6,8 +6,9 @@ const saltRounds = 10;
 module.exports.registration = (req, res) => {
          
         if(!req.body) return res.sendStatus(400);
-             
+                    
         const { username, email, password } = req.body;
+        if(email !== null && email !== "" && password !== null && password !== "")
          bcrypt.hash(password, saltRounds, async (err, hash) =>{
             if(err){
             res.send({err: err})

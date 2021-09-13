@@ -1,44 +1,83 @@
-import React, {useState} from 'react';
-import { useStopwatch } from 'react-timer-hook';
-import {Button,
-        Container} from 'react-bootstrap';
+import React, { useState, useEffect } from "react";
+import "./styles_time.css";
 
-        function MyStopwatch() {
-          const {
-            seconds,
-            minutes,
-            hours,
-            days,
-            isRunning,
-            start,
-            pause,
-            reset,
-          } = useStopwatch({ autoStart: false });
+const Timer = () => {
+  const [second, setSecond] = useState("00");
+  const [minute, setMinute] = useState("00");
+  const [hour, setHour] = useState("00");
+  const [isActive, setIsActive] = useState(false);
+  const [counter, setCounter] = useState(0);
 
-      return (
-        <Container>
-        <div className='text-center'>
-          <h1>TIMER</h1>
-          <div style={{fontSize: '100px'}}>
-            <span>{days}</span>:<span>{hours}</span>:<span>{minutes}</span>:<span>{seconds}</span>
-          </div>
-          <p>{isRunning ? 'Running' : 'Not running'}</p>
-          <Button variant="outline-primary" onClick={start}>Start</Button>
-          <Button variant="outline-dark" onClick={pause}>Pause</Button>
-          <Button variant="outline-primary" onClick={reset}>Reset</Button>
-        </div>
-        </Container>
-      );
-    }  
+  useEffect(() => {
+    let intervalId;
 
+    if (isActive) {
+      intervalId = setInterval(() => {
+        const secondCounter = counter % 60;
+        const minuteCounter = Math.floor(counter / 60);
+        const hourCounter = Math.floor(counter / 3600);
 
-  
-function Time() {
+        let computedSecond =
+          String(secondCounter).length === 1
+            ? `0${secondCounter}`
+            : secondCounter;
+        let computedMinute =
+          String(minuteCounter).length === 1
+            ? `0${minuteCounter}`
+            : minuteCounter;
+        let computedHour =
+          String(hourCounter).length === 1
+            ? `0${hourCounter}`
+            : hourCounter;    
+
+        setSecond(computedSecond);
+        setMinute(computedMinute);
+        setHour(computedHour);
+
+        setCounter((counter) => counter + 1);
+      }, 1000);
+    }
+    return () => clearInterval(intervalId);
+  }, [isActive, counter]);
+
+  if (!isActive){
+    console.log("PAUSE",`${hour} : ${minute} : ${second}`);
+  };
+ 
+
+  function stopTimer() {
+    setIsActive(false);
+    setCounter(0);
+    setSecond("00");
+    setMinute("00");
+    setHour("00");
+    console.log("RESET",`${hour} : ${minute} : ${second}`);
+  }
+
   return (
-    <div>
-      <MyStopwatch />
+    <>
+    <div class="container">
+      <div class="time">
+      <span class="minute">{hour}</span>
+        <span>:</span>
+        <span class="minute">{minute}</span>
+        <span>:</span>
+        <span class="second">{second}</span>
+      </div>
+      <div class="buttons">
+        <button onClick={() => setIsActive(!isActive)} class="start">
+          {isActive ? "Pause" : "Start"}
+        </button>
+        <button onClick={stopTimer} class="reset">
+          Reset
+        </button>
+      </div>
     </div>
+    <>
+    
+    </>
+    </>
   );
-}
+};
 
-export default Time;
+export default Timer;

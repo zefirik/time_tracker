@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import "./registr.css";
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import {FloatingLabel,
         Form,
         Button} from 'react-bootstrap';
@@ -13,6 +13,7 @@ function Login({setIsLogin,setisAutheticated, logout}) {
   const [passwordLogin, setPasswordLogin] = useState('');
  
   const [loginStatus, setLoginStatus] = useState('');
+  const history = useHistory();
   //const token = localStorage.getItem('token');
 
   const login = () => {
@@ -29,6 +30,7 @@ function Login({setIsLogin,setisAutheticated, logout}) {
         setLoginStatus(`Hello ${response.data.result.username}!`);
         setIsLogin(response.data.result.username);
         setisAutheticated(true);
+        history.push("/user/time");
     };
   });
 };

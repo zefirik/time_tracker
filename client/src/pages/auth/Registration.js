@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import "./registr.css";
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import {FloatingLabel,
         Form,
         Button} from 'react-bootstrap';
@@ -10,6 +10,7 @@ function Registration() {
     const [userNameReg, setUserNameReg] = useState(''); 
     const [emailReg, setEmailReg] = useState('');
     const [passwordReg, setPasswordReg] = useState('');
+    const history = useHistory();
 
     const register = () => {
         axios.post('http://localhost:3001/auth/registration', {
@@ -19,7 +20,8 @@ function Registration() {
         }).then((response)=> {
           console.log(response);
           alert(response.data);
-          window.location.href = "/auth/login";
+          history.push("/auth/login");
+          //window.location.href = "/auth/login";
         });
       };
 
