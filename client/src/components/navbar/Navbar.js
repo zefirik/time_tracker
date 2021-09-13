@@ -6,9 +6,9 @@ import { SidebarData } from './SidebarData';
 import './Navbar.css';
 import { IconContext } from 'react-icons';
 
-function Navbar({isLogin, logout}) {
+function Navbar({logout}) {
   const [sidebar, setSidebar] = useState(false);
-
+  const isLogin = localStorage.getItem('userName');
   const showSidebar = () => setSidebar(!sidebar);
  
   return (

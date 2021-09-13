@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from "react";
+import axios from 'axios';
 import "./styles_time.css";
+import {FloatingLabel,
+        Form} from 'react-bootstrap';
 
 const Timer = () => {
+  const token = localStorage.getItem('token');
   const [second, setSecond] = useState("00");
   const [minute, setMinute] = useState("00");
   const [hour, setHour] = useState("00");
   const [isActive, setIsActive] = useState(false);
   const [counter, setCounter] = useState(0);
+  const [operation, setOperation] = useState('')
+  let AllTimeSecond = (hour * (60 * 60))+ ( minute * 60) + second; 
 
   useEffect(() => {
     let intervalId;
-
+    if(operation){
     if (isActive) {
       intervalId = setInterval(() => {
         const secondCounter = counter % 60;
@@ -36,13 +42,16 @@ const Timer = () => {
 
         setCounter((counter) => counter + 1);
       }, 1000);
-    }
+    }}
     return () => clearInterval(intervalId);
-  }, [isActive, counter]);
+  }, [isActive, counter, operation]);
 
-  if (!isActive){
-    console.log("PAUSE",`${hour} : ${minute} : ${second}`);
+  if (!isActive && second > 0){
+    console.log("PAUSE", `${operation} continue ${hour} : ${minute} : ${second}`);
+    console.log(AllTimeSecond)
   };
+
+  
  
 
   function stopTimer() {
@@ -51,32 +60,49 @@ const Timer = () => {
     setSecond("00");
     setMinute("00");
     setHour("00");
-    console.log("RESET",`${hour} : ${minute} : ${second}`);
+    setOperation('');
+    document.getElementById('myInput').value = '';
+    console.log("RESET",`${operation} continue ${hour} : ${minute} : ${second}`);
+    console.log(AllTimeSecond);
+    sendData();
   }
 
+
+  const sendData = () => {
+    axios.post('http://localhost:3001/user/time/send', {
+      operation: operation,
+      time: AllTimeSecond
+    },{headers: {'authorization': `Bearer ${token}`}})
+    .then((response)=> {
+      console.log(response);
+      alert(response.data)
+    });
+  };
+
   return (
-    <>
-    <div class="container">
-      <div class="time">
-      <span class="minute">{hour}</span>
+    
+    <div className="container">
+      <div className="time">
+      <span className="minute">{hour}</span>
         <span>:</span>
-        <span class="minute">{minute}</span>
+        <span className="minute">{minute}</span>
         <span>:</span>
-        <span class="second">{second}</span>
+        <span className="second">{second}</span>
       </div>
-      <div class="buttons">
-        <button onClick={() => setIsActive(!isActive)} class="start">
-          {isActive ? "Pause" : "Start"}
+      <div className="buttons">
+        <button onClick={() => setIsActive(!isActive)} className="start">
+          {isActive && operation ? "Pause" : "Start"}
         </button>
-        <button onClick={stopTimer} class="reset">
+        <button onClick={stopTimer} className="reset">
           Reset
         </button>
       </div>
+      <div>
+      <FloatingLabel label="What are you doing..." className="my-3" >
+            <Form.Control id="myInput" type="text" placeholder="What are you doing..." onChange={(e) => {setOperation(e.target.value)}}/> 
+        </FloatingLabel>
     </div>
-    <>
-    
-    </>
-    </>
+    </div>
   );
 };
 

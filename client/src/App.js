@@ -1,4 +1,4 @@
-import React, {useState}  from 'react';
+import React, {useState, useEffect}  from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css';
 import Navbar from './components/navbar/Navbar';
@@ -13,14 +13,21 @@ import GuardedRoute from './middlewares/GuardedRoute';
 
 
 function App() {
-  const [isLogin, setIsLogin] = useState('');
-  //console.log(isLogin);
+  
   //const [userData, setUserData] = useState();
-  const[isAutheticated, setisAutheticated] = useState();
+  const[isAutheticated, setisAutheticated] = useState(false);
+  console.log(isAutheticated);
+  
+
+  useEffect(() => {
+    if(!localStorage.getItem("token")) return;
+    setisAutheticated(true);
+    }, []);
+
+
 
   const logout = () => {
-    localStorage.removeItem('token');
-    setIsLogin(false);
+    localStorage.clear();
     setisAutheticated(false);
   };
 
@@ -28,12 +35,12 @@ function App() {
   return (
     <>
       <Router>
-        <Navbar isLogin={isLogin} logout={logout}/>
+        <Navbar logout={logout}/>
         <Switch>
           <Route path='/' exact component={Home} />
           <GuardedRoute path='/user/reports' component={Reports} auth={isAutheticated}/>
           <GuardedRoute path='/user/time' component={Time} auth={isAutheticated}/>
-          <Route path='/auth/login' component={() => <Login setIsLogin={setIsLogin} setisAutheticated={setisAutheticated} logout={logout}/> } />
+          <Route path='/auth/login' component={() => <Login setisAutheticated={setisAutheticated} logout={logout}/> } />
           <Route path='/auth/registration' component={Registration} />
         </Switch>
       </Router>

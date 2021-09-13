@@ -8,7 +8,7 @@
     background: linear-gradient(
       90deg,
       rgb(8, 3, 37) 0%,
-      rgba(81, 22, 111, 1) 35%,
+      rgb(64, 15, 88) 35%,
       rgb(16, 57, 192) 100%
     );
     padding: 3rem 5rem;
@@ -49,5 +49,12 @@
   .reset {
     background: #fd7171;
     color: white;
+  }
+
+  .registration, .login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
   
