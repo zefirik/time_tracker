@@ -11,8 +11,9 @@ const Timer = () => {
   const [hour, setHour] = useState("00");
   const [isActive, setIsActive] = useState(false);
   const [counter, setCounter] = useState(0);
-  const [operation, setOperation] = useState('')
-  let AllTimeSecond = +((hour * (60 * 60))+ ( minute * 60) + second); 
+  const [operation, setOperation] = useState('');
+  const [dateOperation, setDateOperation] = useState('')
+  let AllTimeSecond = +((+hour * (60 * 60))+ ( +minute * 60) + +second); 
 
   useEffect(() => {
     let intervalId;
@@ -39,6 +40,7 @@ const Timer = () => {
         setSecond(computedSecond);
         setMinute(computedMinute);
         setHour(computedHour);
+        getCurrentDate();
 
         setCounter((counter) => counter + 1);
       }, 1000);
@@ -48,10 +50,19 @@ const Timer = () => {
 
   if (!isActive && second > 0){
     console.log("PAUSE", `${operation} continue ${hour} : ${minute} : ${second}`);
-    console.log(AllTimeSecond)
+    console.log(AllTimeSecond);
+    console.log(dateOperation);
   };
 
-  
+  function getCurrentDate(){
+
+    let newDate = new Date()
+    let day = newDate.getDate();
+    let month = newDate.getMonth() + 1;
+    let year = newDate.getFullYear();
+    setDateOperation(`${year}/${month<10?`0${month}`:`${month}`}/${day}`);
+    
+    }
  
 
   function stopTimer() {
@@ -65,14 +76,17 @@ const Timer = () => {
     console.log("RESET",`${operation} continue ${hour} : ${minute} : ${second}`);
     console.log(AllTimeSecond)
     sendData();
+   
+    console.log(dateOperation);
   }
 
 
   const sendData = () => {
     axios.post('http://localhost:3001/user/time/send', {
-      operation: operation,
+      operation: operation.toLowerCase(),
       time: AllTimeSecond,
       id: userId,
+      date: dateOperation,
     })
     .then((response)=> {
       console.log(response);
@@ -99,7 +113,7 @@ const Timer = () => {
       </div>
       <div>
       <FloatingLabel label="What are you doing..." className="my-3" >
-            <Form.Control id="myInput" type="text" placeholder="What are you doing..." onChange={(e) => {setOperation(e.target.value)}}/> 
+            <Form.Control id="myInput" type="text" placeholder="Please enter action" onChange={(e) => {setOperation(e.target.value)}}/> 
         </FloatingLabel>
     </div>
     </div>

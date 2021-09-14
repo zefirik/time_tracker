@@ -7,11 +7,11 @@ module.exports.send = async (req, res) => {
          
         if(!req.body) return res.sendStatus(400);
                     
-        const { operation, time, id } = req.body;
+        const { operation, time, id, date } = req.body;
         console.log("REQUEST GET",req.body)
-       
-     await Operations.create({ operation, time, userId: id}).then(()=>{
-        res.send('Create user was successful');
+
+     await Operations.create({ operation, time, userId: id, date}).then(()=>{
+        res.send('Recording successfully');
         console.log(req.body);
      }).catch(err=>console.log(err));
     };

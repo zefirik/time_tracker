@@ -10,6 +10,9 @@ const Operations = db.define('operations',{
     },
     userId: {
         type: DataTypes.STRING
+    },
+    date: {
+        type: DataTypes.STRING
     }
 });
 
