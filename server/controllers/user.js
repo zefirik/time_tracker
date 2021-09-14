@@ -14,8 +14,10 @@ module.exports.send = async (req, res) => {
      }).catch(err=>console.log(err));
     };
 
-module.exports.getAllReports = async (req, res) => {
-        await Operations.findAll({raw:true}).then(result=>{
+module.exports.getIdReports = async (req, res) => {
+        const idUser = req.params.id;
+        console.log("SEND ID:",idUser);
+        await Operations.findAll({where:{userId: idUser}, raw:true}).then(result=>{
             res.send(result);
             console.log(result);
             

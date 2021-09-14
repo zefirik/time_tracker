@@ -3,7 +3,8 @@ import axios from 'axios';
 import {Container, Table} from 'react-bootstrap';
 
 function Reports() {
-  //const localUserID = localStorage.getItem('userID');
+  const id = localStorage.getItem('userID');
+  console.log(id);
   const [reports, setReports] = useState([]);
 
   useEffect(() => {
@@ -11,7 +12,7 @@ function Reports() {
   }, []);
 
   function getUserReports() {
-    axios.get('http://localhost:3001/user/reports')
+    axios.get(`http://localhost:3001/user/reports/${id}`)
         .then(response => {
         setReports(response.data);
       });
@@ -31,7 +32,6 @@ function Reports() {
            <th>operation</th>
            <th>time</th>
            <th>date</th>
-           <th>userId</th>
          </tr>
        </thead>
        <tbody>
@@ -40,7 +40,6 @@ function Reports() {
          <td>{item.operation}</td>
          <td>{item.time} sec</td>
          <td>{item.date}</td>
-         <td>{item.userId}</td>
        </tr>))
        }
        </tbody>
