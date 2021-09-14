@@ -1,5 +1,5 @@
 .container {
-    width: 750px;
+    /* width: 750px; */
     margin: 0 auto;
     display: grid;
     place-items: center;
@@ -58,3 +58,6 @@
     align-items: center;
   }
   
+  .table {
+    width: 50vw;
+  }

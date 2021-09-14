@@ -1,8 +1,6 @@
 const Operations = require('../models/operations');
 
 
-
-
 module.exports.send = async (req, res) => {
          
         if(!req.body) return res.sendStatus(400);
@@ -15,3 +13,12 @@ module.exports.send = async (req, res) => {
         console.log(req.body);
      }).catch(err=>console.log(err));
     };
+
+module.exports.getAllReports = async (req, res) => {
+        await Operations.findAll({raw:true}).then(result=>{
+            res.send(result);
+            console.log(result);
+            
+        }).catch(err=>console.log(err));
+        
+    }

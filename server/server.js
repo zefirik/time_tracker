@@ -7,12 +7,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const db = require('./config/connection');
 
-
-
- 
 app.use(express.json());
 app.use(cors());
-
 
 //TEST DB
 db.authenticate()
