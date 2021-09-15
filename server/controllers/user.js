@@ -17,7 +17,7 @@ module.exports.send = async (req, res) => {
 module.exports.getIdReports = async (req, res) => {
         const idUser = req.params.id;
         console.log("SEND ID:",idUser);
-        await Operations.findAll({where:{userId: idUser}, raw:true}).then(result=>{
+        await Operations.findAll({where:{userId: idUser}, order:[['date', 'DESC']], raw:true}).then(result=>{
             res.send(result);
             console.log(result);
             
