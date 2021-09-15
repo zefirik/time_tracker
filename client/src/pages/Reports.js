@@ -1,5 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 import {Container, Table, Form, Button} from 'react-bootstrap';
 
 function secondsToHms(d) {
@@ -19,6 +22,8 @@ function secondsToHms(d) {
 
 function Reports() {
   const id = localStorage.getItem('userID');
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [startDate, endDate] = dateRange;
  
   const [reports, setReports] = useState([]);
   const [filterOperation, setFilterOperation] = useState('');
@@ -37,7 +42,7 @@ function Reports() {
 
   function findOperation(){
       if(filterOperation !== null && filterOperation !== ""){
-      axios.get(`http://localhost:3001/user/repo/filter`,{ params: { id, filterOperation } })
+      axios.get(`http://localhost:3001/user/reports/filter`,{ params: { id, filterOperation } })
       .then(response => {
       setReports(response.data);
     });
@@ -55,11 +60,22 @@ function Reports() {
     <div className="time">
     <h2>Reports</h2>
     </div>
-    <div className="d-flex my-3">
+    <div className="d-flex justify-content-center mt-2">
     <Form.Control type="text" placeholder="Choose operation" onChange={(e) => {setFilterOperation(e.target.value)}}/> 
-    <Button onClick={findOperation} className="mx-2">
+        <Button onClick={findOperation} >
           Find
         </Button>
+    </div>
+    <div className="d-flex justify-content-center my-3">
+    <DatePicker
+      selectsRange={true}
+      startDate={startDate}
+      endDate={endDate}
+      onChange={(update) => {
+        setDateRange(update);
+      }}
+      isClearable={true}
+    />
     </div>
      <div className="table"> 
      <Table striped bordered hover variant="dark">
@@ -81,6 +97,7 @@ function Reports() {
        </tbody>
      </Table>
      </div>
+     
      </Container>
      
   );
