@@ -15,7 +15,7 @@ module.exports.send = async (req, res) => {
     };
 
 module.exports.getIdReports = async (req, res) => {
-        const idUser = req.params.id;
+        const idUser = req.query.id;
         console.log("SEND ID:",idUser);
         await Operations.findAll({where:{userId: idUser}, order:[['date', 'DESC']], raw:true}).then(result=>{
             res.send(result);
@@ -24,3 +24,21 @@ module.exports.getIdReports = async (req, res) => {
         }).catch(err=>console.log(err));
         
     }
+
+module.exports.getFilterOperationsReports = async (req, res) => {
+   
+    const {id , filterOperation}= req.query;
+    console.log("SEND PARAMS:",req.query);
+
+    await Operations.findAll({where:{
+        userId: id,
+        operation: filterOperation
+        }, order:[['date', 'DESC']], raw:true}).then(result=>{
+        res.send(result);
+        console.log(result);
+        
+    }).catch(err=>console.log(err));
+
+
+}
+

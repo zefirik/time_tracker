@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import {Container, Table} from 'react-bootstrap';
+import {Container, Table, Form, Button} from 'react-bootstrap';
 
 function secondsToHms(d) {
   d = Number(d);
@@ -15,28 +15,51 @@ function secondsToHms(d) {
 }
 
 
+
+
 function Reports() {
   const id = localStorage.getItem('userID');
-  console.log(id);
+ 
   const [reports, setReports] = useState([]);
+  const [filterOperation, setFilterOperation] = useState('');
+  console.log("SEND QUERY",id, filterOperation);
 
   useEffect(() => {
     getUserReports();
   }, []);
 
   function getUserReports() {
-    axios.get(`http://localhost:3001/user/reports/${id}`)
+    axios.get(`http://localhost:3001/user/reports/`,{ params: {id}})
         .then(response => {
         setReports(response.data);
       });
   }
+
+  function findOperation(){
+      if(filterOperation !== null && filterOperation !== ""){
+      axios.get(`http://localhost:3001/user/repo/filter`,{ params: { id, filterOperation } })
+      .then(response => {
+      setReports(response.data);
+    });
+    return;
+   }
+    getUserReports();
+
+  }
+
   console.log(reports);
 
   return (
   
     <Container>
     <div className="time">
-    <h1>Reports</h1>
+    <h2>Reports</h2>
+    </div>
+    <div className="d-flex my-3">
+    <Form.Control type="text" placeholder="Choose operation" onChange={(e) => {setFilterOperation(e.target.value)}}/> 
+    <Button onClick={findOperation} className="mx-2">
+          Find
+        </Button>
     </div>
      <div className="table"> 
      <Table striped bordered hover variant="dark">
