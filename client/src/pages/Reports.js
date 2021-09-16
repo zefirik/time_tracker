@@ -47,11 +47,10 @@ function Reports() {
   function findOperation(){
       if(filterOperation !== null && filterOperation !== "" && startDate !== null && endDate !== null){
       axios.get(`http://localhost:3001/user/reports/filter`,{ params: { id, filterOperation, startDate, endDate } })
-      
       .then(response => {
-        
-      setReports(response.data);
-    });
+        setReports(response.data[0]);
+        console.log("RESPONS FOR FIND",response);
+      });
     return;
    }
     setMessage(`Please, enter all input`);
@@ -69,7 +68,7 @@ function Reports() {
     <h3 className="d-flex text-content-center">{message}</h3>
     </div>
     <div className="d-flex justify-content-center mt-2 ">
-    <Form.Control type="text" placeholder="Choose operation" onChange={(e) => {setFilterOperation(e.target.value)}}/> 
+    <Form.Control type="text" placeholder="Choose operation" onChange={(e) => {setFilterOperation((e.target.value).toLowerCase())}}/> 
         <Button onClick={findOperation}>
           Find
         </Button>

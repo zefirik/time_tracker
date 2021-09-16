@@ -24,14 +24,10 @@ module.exports.getIdReports = async (req, res) => {
         await sequelize.query(`
             SELECT * FROM "operations"
             WHERE "userId" = ${idUser}
+            ORDER BY date DESC
         `).then(result=>{
             res.send(result);
-            console.log(result);
-        // await sequelize.query(`
-        //     SELECT * FROM "Operations"
-        //     WHERE "userId" = ${id}
-        // `)
-            
+            console.log(result);          
         }).catch(err=>console.log(err));
         
     }
@@ -40,19 +36,17 @@ module.exports.getFilterOperationsReports = async (req, res) => {
    
     const {id , filterOperation, startDate, endDate }= req.query;
     console.log("ENTER PARAMS:",req.query);
-    
-
-    await Operations.findAll({where:{
-        userId: id,
-        operation: filterOperation.toLowerCase(),
-        date: {
-            [Op.between]: [startDate, endDate]
-            }
-        }, order:[['date', 'DESC']], raw:true}).then(result=>{
+      
+    await sequelize.query(`
+            SELECT * FROM "operations"
+            WHERE "userId" = '${id}' AND "operation" = '${filterOperation}' AND ("date" BETWEEN '${startDate}' AND '${endDate}')
+        `)
+        .then(result=>{
         res.send(result);
         console.log(result);
         
     }).catch(err=>console.log(err));
+   
 
 
 }
