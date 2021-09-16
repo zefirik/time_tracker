@@ -26,10 +26,13 @@ function Reports() {
   const [startDate, endDate] = dateRange;
  
   const [reports, setReports] = useState([]);
- // const [message, setMessage] = useState('');
   const [filterOperation, setFilterOperation] = useState(null);
   console.log("SEND QUERY",id, filterOperation, startDate, endDate);
-  // console.log("Msg",message)
+  
+  
+  const totalTime = reports.map((task) => task.time).reduce((a, b) => a + b, 0);
+  console.log("TotalTimE:",totalTime);
+
 
   useEffect(() => {
     getUserReports();
@@ -57,7 +60,7 @@ function Reports() {
   return (
   
     <Container>
-    <div className="time ">
+    <div className="time">
     <h2>Reports</h2>
     {/* <h3 className="d-flex text-content-center">{message}</h3> */}
     </div>
@@ -100,7 +103,7 @@ function Reports() {
        </tbody>
      </Table>
      </div>
-     
+     <h3 style={{ color: 'white' }}>Total time: {secondsToHms(totalTime)}</h3>
      </Container>
      
   );
