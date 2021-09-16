@@ -1,6 +1,7 @@
 const Operations = require('../models/operations');
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
+const sequelize= require('../config/connection');
 
 
 module.exports.send = async (req, res) => {
@@ -19,9 +20,17 @@ module.exports.send = async (req, res) => {
 module.exports.getIdReports = async (req, res) => {
         const idUser = req.query.id;
         console.log("SEND ID:",idUser);
-        await Operations.findAll({where:{userId: idUser}, order:[['date', 'DESC']], raw:true}).then(result=>{
+        // await Operations.findAll({where:{userId: idUser}, order:[['date', 'DESC']], raw:true}
+        await sequelize.query(`
+            SELECT * FROM "operations"
+            WHERE "userId" = ${idUser}
+        `).then(result=>{
             res.send(result);
             console.log(result);
+        // await sequelize.query(`
+        //     SELECT * FROM "Operations"
+        //     WHERE "userId" = ${id}
+        // `)
             
         }).catch(err=>console.log(err));
         
@@ -29,17 +38,16 @@ module.exports.getIdReports = async (req, res) => {
 
 module.exports.getFilterOperationsReports = async (req, res) => {
    
-    const {id , filterOperation}= req.query;
-    console.log("SEND PARAMS:",req.query);
+    const {id , filterOperation, startDate, endDate }= req.query;
+    console.log("ENTER PARAMS:",req.query);
     
-    //await Operations.query(`SELECT * FROM operations WHERE id=${req.query.id} ORDER BY date`,
 
     await Operations.findAll({where:{
         userId: id,
         operation: filterOperation.toLowerCase(),
-        // date: {
-        //     [Op.between]: ["2021/09/08", "2021/09/14"]
-        //     }
+        date: {
+            [Op.between]: [startDate, endDate]
+            }
         }, order:[['date', 'DESC']], raw:true}).then(result=>{
         res.send(result);
         console.log(result);

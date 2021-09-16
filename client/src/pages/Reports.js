@@ -26,8 +26,10 @@ function Reports() {
   const [startDate, endDate] = dateRange;
  
   const [reports, setReports] = useState([]);
+  const [message, setMessage] = useState('');
   const [filterOperation, setFilterOperation] = useState('');
-  console.log("SEND QUERY",id, filterOperation);
+  console.log("SEND QUERY",id, filterOperation, startDate, endDate);
+  // console.log("Msg",message)
 
   useEffect(() => {
     getUserReports();
@@ -36,18 +38,23 @@ function Reports() {
   function getUserReports() {
     axios.get(`http://localhost:3001/user/reports/`,{ params: {id}})
         .then(response => {
-        setReports(response.data);
+        setReports(response.data[0]);
+        console.log("RESPONS FOR FIND",response);
       });
   }
+ 
 
   function findOperation(){
-      if(filterOperation !== null && filterOperation !== ""){
-      axios.get(`http://localhost:3001/user/reports/filter`,{ params: { id, filterOperation } })
+      if(filterOperation !== null && filterOperation !== "" && startDate !== null && endDate !== null){
+      axios.get(`http://localhost:3001/user/reports/filter`,{ params: { id, filterOperation, startDate, endDate } })
+      
       .then(response => {
+        
       setReports(response.data);
     });
     return;
    }
+    setMessage(`Please, enter all input`);
     getUserReports();
 
   }
@@ -57,17 +64,19 @@ function Reports() {
   return (
   
     <Container>
-    <div className="time">
+    <div className="time ">
     <h2>Reports</h2>
+    <h3 className="d-flex text-content-center">{message}</h3>
     </div>
-    <div className="d-flex justify-content-center mt-2">
+    <div className="d-flex justify-content-center mt-2 ">
     <Form.Control type="text" placeholder="Choose operation" onChange={(e) => {setFilterOperation(e.target.value)}}/> 
-        <Button onClick={findOperation} >
+        <Button onClick={findOperation}>
           Find
         </Button>
     </div>
     <div className="d-flex justify-content-center my-3">
     <DatePicker
+      dateFormat="yyyy/MM/dd"
       selectsRange={true}
       startDate={startDate}
       endDate={endDate}
@@ -76,6 +85,7 @@ function Reports() {
       }}
       isClearable={true}
     />
+    
     </div>
      <div className="table"> 
      <Table striped bordered hover variant="dark">

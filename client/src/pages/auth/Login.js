@@ -14,7 +14,7 @@ function Login({setisAutheticated, logout}) {
  
   const [loginStatus, setLoginStatus] = useState('');
   const history = useHistory();
-  //const token = localStorage.getItem('token');
+
 
   const login = () => {
     axios.post('http://localhost:3001/auth/login', {
@@ -30,7 +30,6 @@ function Login({setisAutheticated, logout}) {
         localStorage.setItem("userID",response.data.result.id);
         //console.log(response.data);
         setLoginStatus(`Hello ${response.data.result.username}!`);
-        //setIsLogin(response.data.result.username);
         setisAutheticated(true);
         history.push("/user/time");
     };
