@@ -18,16 +18,16 @@ module.exports.send = async (req, res) => {
     };
 
 module.exports.getIdReports = async (req, res) => {
-        const idUser = req.query.id;
-        console.log("SEND ID:",idUser);
+        const id = req.query.id;
+        console.log("SEND ID:",id);
         // await Operations.findAll({where:{userId: idUser}, order:[['date', 'DESC']], raw:true}
         await sequelize.query(`
             SELECT * FROM "operations"
-            WHERE "userId" = ${idUser}
+            WHERE "userId" = ${id}
             ORDER BY date DESC
         `).then(result=>{
             res.send(result);
-            console.log(result);          
+            console.log(result,"-------------------------------------------");          
         }).catch(err=>console.log(err));
         
     }
@@ -36,14 +36,23 @@ module.exports.getFilterOperationsReports = async (req, res) => {
    
     const {id , filterOperation, startDate, endDate }= req.query;
     console.log("ENTER PARAMS:",req.query);
+    let findFilter ="";
+    let findPeriod ="";
+    if(filterOperation !==  null && filterOperation !== undefined && filterOperation !== ""){
+        findFilter = `AND "operation" = '${filterOperation}'`;
+    }
+    if(startDate !== null && startDate !== undefined && endDate !==  null && endDate !== undefined){
+       findPeriod = `AND "date" BETWEEN '${startDate}' AND '${endDate}'`;
+    }
       
     await sequelize.query(`
             SELECT * FROM "operations"
-            WHERE "userId" = '${id}' AND "operation" = '${filterOperation}' AND ("date" BETWEEN '${startDate}' AND '${endDate}')
+            WHERE "userId" = '${id}' ${findFilter}  ${findPeriod}
+            ORDER BY date DESC
         `)
         .then(result=>{
         res.send(result);
-        console.log(result);
+        console.log(result,"***********************************************************");
         
     }).catch(err=>console.log(err));
    

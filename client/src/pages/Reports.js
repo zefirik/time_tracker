@@ -26,8 +26,8 @@ function Reports() {
   const [startDate, endDate] = dateRange;
  
   const [reports, setReports] = useState([]);
-  const [message, setMessage] = useState('');
-  const [filterOperation, setFilterOperation] = useState('');
+ // const [message, setMessage] = useState('');
+  const [filterOperation, setFilterOperation] = useState(null);
   console.log("SEND QUERY",id, filterOperation, startDate, endDate);
   // console.log("Msg",message)
 
@@ -45,17 +45,11 @@ function Reports() {
  
 
   function findOperation(){
-      if(filterOperation !== null && filterOperation !== "" && startDate !== null && endDate !== null){
-      axios.get(`http://localhost:3001/user/reports/filter`,{ params: { id, filterOperation, startDate, endDate } })
-      .then(response => {
-        setReports(response.data[0]);
-        console.log("RESPONS FOR FIND",response);
-      });
-    return;
-   }
-    setMessage(`Please, enter all input`);
-    getUserReports();
-
+   axios.get(`http://localhost:3001/user/reports/filter`,{ params: { id, filterOperation, startDate, endDate } })
+   .then(response => {
+     setReports(response.data[0]);
+     console.log("RESPONS FOR FIND",response);
+   });
   }
 
   console.log(reports);
@@ -65,7 +59,7 @@ function Reports() {
     <Container>
     <div className="time ">
     <h2>Reports</h2>
-    <h3 className="d-flex text-content-center">{message}</h3>
+    {/* <h3 className="d-flex text-content-center">{message}</h3> */}
     </div>
     <div className="d-flex justify-content-center mt-2 ">
     <Form.Control type="text" placeholder="Choose operation" onChange={(e) => {setFilterOperation((e.target.value).toLowerCase())}}/> 
