@@ -109,7 +109,7 @@ const Timer = () => {
           {isActive && operation ? "Pause" : "Start"}
         </button>
         <button onClick={stopTimer} className="reset">
-          Reset
+          Stop
         </button>
       </div>
       <div>

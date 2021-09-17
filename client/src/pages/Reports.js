@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import DatePicker from "react-datepicker";
@@ -11,8 +12,8 @@ function secondsToHms(d) {
   let m = Math.floor(d % 3600 / 60);
   let s = Math.floor(d % 3600 % 60);
 
-  let hDisplay = h > 0 ? h + (h === 1 ? " hour, " : " hours, ") : "";
-  let mDisplay = m > 0 ? m + (m === 1 ? " minute, " : " minutes, ") : "";
+  let hDisplay = h > 0 ? h + (h === 1 ? " hour/ " : " hours /") : "";
+  let mDisplay = m > 0 ? m + (m === 1 ? " minute/ " : " minutes /") : "";
   let sDisplay = s > 0 ? s + (s === 1 ? " second" : " seconds") : "";
   return hDisplay + mDisplay + sDisplay; 
 }
@@ -73,12 +74,13 @@ function Reports() {
     {/* <h3 className="d-flex text-content-center">{message}</h3> */}
     </div>
     <div className="d-flex justify-content-center mt-2 ">
-    <Form.Control type="text" placeholder="Choose operation" onChange={(e) => {setFilterOperation((e.target.value).toLowerCase())}}/> 
+    <Form.Control type="text" placeholder="Choose operation" onChange={(e) => {setFilterOperation((e.target.value).toLowerCase())} }/> 
         <Button onClick={findOperation}>
           Find
         </Button>
     </div>
-    <div className="d-flex justify-content-center my-3">
+    <div style={{ color: 'white' }} className="my-2">date period</div>
+    <div className="d-flex justify-content-center mb-3">
     <DatePicker
       dateFormat="yyyy/MM/dd"
       selectsRange={true}
@@ -89,7 +91,9 @@ function Reports() {
       }}
       isClearable={true}
     />
-    
+    </div>
+    <div>
+      <h3 style={{ color: 'white' }}>Total time: {secondsToHms(totalTime)}</h3>
     </div>
      <div className="table"> 
      <Table striped bordered hover variant="dark">
@@ -113,7 +117,6 @@ function Reports() {
        </tbody>
      </Table>
      </div>
-     <h3 style={{ color: 'white' }}>Total time: {secondsToHms(totalTime)}</h3>
      </Container>
      
   );
