@@ -31,7 +31,7 @@ function Reports() {
   
   
   const totalTime = reports.map((task) => task.time).reduce((a, b) => a + b, 0);
-  console.log("TotalTimE:",totalTime);
+ 
 
 
   useEffect(() => {
@@ -46,7 +46,6 @@ function Reports() {
       });
   }
  
-
   function findOperation(){
    axios.get(`http://localhost:3001/user/reports/filter`,{ params: { id, filterOperation, startDate, endDate } })
    .then(response => {
@@ -55,6 +54,15 @@ function Reports() {
    });
   }
 
+  function deleteOperation(itemId){
+    console.log(itemId);
+    axios.delete(`http://localhost:3001/user/reports/filter`,{ params: {itemId}})
+        .then(response => {
+        console.log("RESPONS FOR FIND",response.data);
+        getUserReports();
+      });
+    
+  }
   console.log(reports);
 
   return (
@@ -90,6 +98,7 @@ function Reports() {
            <th>operation</th>
            <th>time</th>
            <th>date</th>
+           <th></th>
          </tr>
        </thead>
        <tbody>
@@ -98,6 +107,7 @@ function Reports() {
          <td>{item.operation}</td>
          <td>{secondsToHms(item.time)}</td>
          <td>{item.date}</td>
+         <td style={{ textAlign: "center" }}><Button variant="outline-danger" onClick={()=> deleteOperation(item.id)}>X</Button></td>
        </tr>))
        }
        </tbody>

@@ -29,7 +29,6 @@ module.exports.getIdReports = async (req, res) => {
             res.send(result);
             console.log(result,"-------------------------------------------");          
         }).catch(err=>console.log(err));
-        
     }
 
 module.exports.getFilterOperationsReports = async (req, res) => {
@@ -56,7 +55,19 @@ module.exports.getFilterOperationsReports = async (req, res) => {
         
     }).catch(err=>console.log(err));
    
-
-
 }
+
+module.exports.delOperationReports = async (req, res) => {
+    const id = req.query.itemId;
+    console.log("DELETE ID:",id);
+
+    await sequelize.query(`
+        DELETE FROM "operations"
+        WHERE "id" = ${id}
+    `).then(result=>{
+        res.send(result);
+        console.log(result,"###########################################################");          
+    }).catch(err=>console.log(err));
+}
+
 

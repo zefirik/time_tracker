@@ -61,7 +61,6 @@ const Timer = () => {
     let month = newDate.getMonth() + 1;
     let year = newDate.getFullYear();
     setDateOperation(`${year}/${month<10?`0${month}`:`${month}`}/${day}`);
-    
     }
  
 
@@ -75,10 +74,12 @@ const Timer = () => {
     document.getElementById('myInput').value = '';
     console.log("RESET",`${operation} continue ${hour} : ${minute} : ${second}`);
     console.log(AllTimeSecond)
-    sendData();
+    if(operation){sendData();}
    
     console.log(dateOperation);
+
   }
+
 
 
   const sendData = () => {
