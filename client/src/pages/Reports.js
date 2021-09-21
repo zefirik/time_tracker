@@ -3,22 +3,12 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import SecondsToHms from '../components/pagination/secondsToHms';
+import Posts from '../components/pagination/Posts';
+import Pagination from '../components/pagination/Pagination';
+
 
 import {Container, Table, Form, Button} from 'react-bootstrap';
-
-function secondsToHms(d) {
-  d = Number(d);
-  let h = Math.floor(d / 3600);
-  let m = Math.floor(d % 3600 / 60);
-  let s = Math.floor(d % 3600 % 60);
-
-  let hDisplay = h > 0 ? h + (h === 1 ? " hour/ " : " hours /") : "";
-  let mDisplay = m > 0 ? m + (m === 1 ? " minute/ " : " minutes /") : "";
-  let sDisplay = s > 0 ? s + (s === 1 ? " second" : " seconds") : "";
-  return hDisplay + mDisplay + sDisplay; 
-}
-
-
 
 
 function Reports() {
@@ -28,12 +18,24 @@ function Reports() {
  
   const [reports, setReports] = useState([]);
   const [filterOperation, setFilterOperation] = useState(null);
-  console.log("SEND QUERY",id, filterOperation, startDate, endDate);
+
+   //console.log("SEND QUERY",id, filterOperation, startDate, endDate);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(6);
+
+    // Get current posts
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currenReports = reports.slice(indexOfFirstPost, indexOfLastPost);
+
+  // Change page
+  const paginate = pageNumber => setCurrentPage(pageNumber);
+ 
   
   
   const totalTime = reports.map((task) => task.time).reduce((a, b) => a + b, 0);
  
-
 
   useEffect(() => {
     getUserReports();
@@ -51,7 +53,7 @@ function Reports() {
    axios.get(`http://localhost:3001/user/reports/filter`,{ params: { id, filterOperation, startDate, endDate } })
    .then(response => {
      setReports(response.data[0]);
-     console.log("RESPONS FOR FIND",response);
+     //console.log("RESPONS FOR FIND",response);
    });
   }
 
@@ -59,13 +61,13 @@ function Reports() {
     console.log(itemId);
     axios.delete(`http://localhost:3001/user/reports/filter`,{ params: {itemId}})
         .then(response => {
-        console.log("RESPONS FOR FIND",response.data);
+        //console.log("RESPONS FOR FIND",response.data);
         getUserReports();
       });
     
   }
   console.log(reports);
-
+ 
   return (
   
     <Container>
@@ -93,7 +95,7 @@ function Reports() {
     />
     </div>
     <div>
-      <h3 style={{ color: 'white' }}>Total time: {secondsToHms(totalTime)}</h3>
+      <h3 style={{ color: 'white' }}>Total time: {SecondsToHms(totalTime)}</h3>
     </div>
      <div className="table"> 
      <Table striped bordered hover variant="dark">
@@ -105,17 +107,13 @@ function Reports() {
            <th></th>
          </tr>
        </thead>
-       <tbody>
-       {reports.map((item) => (
-       <tr key = {item.id}>
-         <td>{item.operation}</td>
-         <td>{secondsToHms(item.time)}</td>
-         <td>{item.date}</td>
-         <td style={{ textAlign: "center" }}><Button variant="outline-danger" onClick={()=> deleteOperation(item.id)}>X</Button></td>
-       </tr>))
-       }
-       </tbody>
+       <Posts reports={currenReports} deleteOperation={deleteOperation} /> 
      </Table>
+     <Pagination
+        postsPerPage={postsPerPage}
+        totalPosts={reports.length}
+        paginate={paginate}
+      /> 
      </div>
      </Container>
      

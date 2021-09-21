@@ -38,7 +38,7 @@ module.exports.getFilterOperationsReports = async (req, res) => {
     let findFilter ="";
     let findPeriod ="";
     if(filterOperation !==  null && filterOperation !== undefined && filterOperation !== ""){
-        findFilter = `AND "operation" = '${filterOperation}'`;
+        findFilter = `AND "operation" LIKE '%${filterOperation}%' `;
     }
     if(startDate !== null && startDate !== undefined && endDate !==  null && endDate !== undefined){
        findPeriod = `AND "date" BETWEEN '${startDate}' AND '${endDate}'`;
