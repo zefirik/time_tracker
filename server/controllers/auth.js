@@ -21,6 +21,13 @@ module.exports.registration = (req, res) => {
     });
  }
 
+module.exports.decodetoken  = async (req, res) => {
+      const token = req.body.token;
+      const body = jwt.decode(token);
+      console.log("body in decodetoken", body);
+      res.send(body);
+    };
+
 module.exports.login = (req, res) => { 
     const { email, password } = req.body;
 

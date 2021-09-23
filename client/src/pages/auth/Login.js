@@ -1,21 +1,27 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import "./registr.css";
 import axios from 'axios';
+import {StoreContext} from '../../components/storage/context'
+
 import { Link, useHistory } from 'react-router-dom';
 import {FloatingLabel,
         Form,
         Button} from 'react-bootstrap';
 
 
-function Login({setisAutheticated, logout}) {
+function Login({logout}) {
   
   const [emailLogin, setEmailLogin] = useState('');
   const [passwordLogin, setPasswordLogin] = useState('');
  
   const [loginStatus, setLoginStatus] = useState('');
   const history = useHistory();
-
-
+  const {dispatch} = useContext(StoreContext);
+  
+  const dataStorage = (data) => {
+    dispatch({ type: "LOGIN", payload: {data} });
+  };
+ 
   const login = () => {
     axios.post('http://localhost:3001/auth/login', {
       email: emailLogin, 
@@ -28,9 +34,11 @@ function Login({setisAutheticated, logout}) {
         localStorage.setItem("token",response.data.token);
         localStorage.setItem("userName",response.data.result.username);
         localStorage.setItem("userID",response.data.result.id);
+        dataStorage(response.data.result)
+       
         //console.log(response.data);
         setLoginStatus(`Hello ${response.data.result.username}!`);
-        setisAutheticated(true);
+       // setisAutheticated(true);
         history.push("/user/time");
     };
   });
