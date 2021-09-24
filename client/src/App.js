@@ -22,18 +22,15 @@ function App() {
 
   useEffect(() => {
     getFromLocalStorage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
 
-    
-   
-
-    //  Добавить verify токена 
-    //  на сервере проверку по ендпоинту декодер уже написал. 
     const dataStorage = (data) => {
       dispatch({ type: "LOGIN", payload: {data} });
     };
 
     let getFromLocalStorage = async () => {
+      if(!localStorage.getItem("token")){return false}
       let result = {};
       console.log("got it");
       const token = await localStorage.getItem("token");

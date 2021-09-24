@@ -1,4 +1,4 @@
-export const initialState = {userData: {data:{}}, isAutheticated: false,  }
+export const initialState = {userData: {data:{}}, isAutheticated: false  }
 
 
 export const reducer = (state, action) => {

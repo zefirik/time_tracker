@@ -23,7 +23,7 @@ module.exports.registration = (req, res) => {
 
 // заменить декодер на верификац токена при проверке
 module.exports.decodetoken  = async (req, res) => {
-      const token = req.body.token;
+      const token = req.body.token; 
       const body = jwt.decode(token);
       console.log("body in decodetoken", body);
       res.send(body);
