@@ -21,48 +21,43 @@ function App() {
   
 
   useEffect(() => {
-    reload();
-    }, []);
+    getFromLocalStorage();
+    },[]);
 
-    const outStorage = () => {
-      dispatch({ type: "LOGOUT" });
-    };
-    const reload = () => {
-      dispatch({ type: "RELOAD" });
-    };
+    
+   
 
-    //  Добавить проверку информации с токена и отчистить локалсторидж от любых данных кроме JWT
+    //  Добавить verify токена 
     //  на сервере проверку по ендпоинту декодер уже написал. 
-    //  Заменить диспатч Reload на полноценный с вычеткой данных  user с jwt
-    // const dataStorage = (data) => {
-    //   dispatch({ type: "LOGIN", payload: {data} });
-    // };
+    const dataStorage = (data) => {
+      dispatch({ type: "LOGIN", payload: {data} });
+    };
 
-    // let getFromLocalStorage = async () => {
-    //   let result = {};
-    //   console.log("got it");
-    //   const token = await localStorage.getItem("token");
-    //   return axios({
-    //     method: "post",
-    //     url: "http://localhost:3001/auth/decodetoken",
-    //     data: { token },
-    //   })
-    //     .then(async function (response) {
-    //       result = await response.data;
-    //     })
-    //     .then(function () {
+    let getFromLocalStorage = async () => {
+      let result = {};
+      console.log("got it");
+      const token = await localStorage.getItem("token");
+      return axios({
+        method: "post",
+        url: "http://localhost:3001/auth/decodetoken",
+        data: { token },
+      })
+        .then(async function (response) {
+          result = await response.data;
+        })
+        .then(function () {
 
-    //       console.log("Decoder result", result);
-    //       return dataStorage(result);
-    //     })
-    //     .catch(function (err) {
-    //       console.log(err);
-    //     });
-    // };
+          console.log("Decoder result", result);
+          return dataStorage(result);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    };
   
   const logout = () => {
     localStorage.clear();
-    outStorage();
+    dispatch({ type: "LOGOUT" });
   };
 
 

@@ -32,8 +32,6 @@ function Login({logout}) {
         setLoginStatus(response.data.message)
       }else{
         localStorage.setItem("token",response.data.token);
-        localStorage.setItem("userName",response.data.result.username);
-        localStorage.setItem("userID",response.data.result.id);
         dataStorage(response.data.result)
        
         //console.log(response.data);

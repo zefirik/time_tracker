@@ -1,16 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { SidebarData } from './SidebarData';
 import './Navbar.css';
 import { IconContext } from 'react-icons';
+import {StoreContext} from '../../components/storage/context'
 
 function Navbar({logout}) {
   const [sidebar, setSidebar] = useState(false);
-  const isLogin = localStorage.getItem('userName');
   const showSidebar = () => setSidebar(!sidebar);
+
+  const {state} = useContext(StoreContext);
+  const userName = state.userData.data.username ;
+
  
+  
+
   return (
     <>
       <IconContext.Provider value={{ color: '#fff' }}>
@@ -20,7 +26,7 @@ function Navbar({logout}) {
           </Link>
           <div className="nav-auth">
 
-            {isLogin ? <><Link to='/user/reports'><button>{isLogin}</button> </Link>
+            {userName? <><Link to='/user/reports'><button>{userName}</button> </Link>
             <Link to='/auth/login'>
             <button onClick={logout}>Logout</button>
           </Link></>

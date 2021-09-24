@@ -1,18 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import axios from 'axios';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import SecondsToHms from '../components/pagination/secondsToHms';
 import Posts from '../components/pagination/Posts';
 import Pagination from '../components/pagination/Pagination';
+import {StoreContext} from '../components/storage/context';
 
 
 import {Container, Table, Form, Button} from 'react-bootstrap';
 
 
 function Reports() {
-  const id = localStorage.getItem('userID');
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
  
@@ -31,8 +31,8 @@ function Reports() {
 
   // Change page
   const paginate = pageNumber => setCurrentPage(pageNumber);
- 
-  
+  const {state} = useContext(StoreContext);
+  const id = state.userData.data.id ;
   
   const totalTime = reports.map((task) => task.time).reduce((a, b) => a + b, 0);
  

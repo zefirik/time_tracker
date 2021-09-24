@@ -1,4 +1,4 @@
-export const initialState = {userData: [], isAutheticated: false,  }
+export const initialState = {userData: {data:{}}, isAutheticated: false,  }
 
 
 export const reducer = (state, action) => {
@@ -10,14 +10,6 @@ export const reducer = (state, action) => {
       case 'LOGOUT':
         return {...initialState}
   
-        case 'RELOAD':
-          return {...state, isAutheticated: true }
-  
-    //   case 'CHANGE':
-    //     return {...state, counter: +action.value}
-  
-    //   case 'RESET':
-    //     return {...initialState}
   
       default:
         return state
