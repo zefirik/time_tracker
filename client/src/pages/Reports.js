@@ -16,9 +16,9 @@ import {Container, Table, Button} from 'react-bootstrap';
 function Reports() {
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
-  const [cat, setCat] = useState();
-  const catOptions = ['react', 'redux', 'postgresql', 'sql'];
+  const [cat, setCat] = useState(); // это переменные для автозаполнения в строке поиска
  
+
   const [reports, setReports] = useState([]);
   const [filterOperation, setFilterOperation] = useState(null);
 
@@ -38,7 +38,18 @@ function Reports() {
   const id = state.userData.data.id ;
   
   const totalTime = reports.map((task) => task.time).reduce((a, b) => a + b, 0);
- 
+  
+  // перебираем входящий массив, чотб найти названия всех дейсвий
+  let result = {}; 
+  reports.map(function (each) {
+    Object.keys(each).map(function (key){
+      result[key] = result[key] || [];
+      result[key].push(each[key]);
+    });
+  });
+  // достаем уникальные имена действий с помощью нового Сэта
+  const catOptions = [...new Set( result.operation )];
+  
 
   useEffect(() => {
     getUserReports();
@@ -49,6 +60,7 @@ function Reports() {
         .then(response => {
         setReports(response.data[0]);
         console.log("RESPONS FOR FIND",response);
+        
       });
   }
  
@@ -80,11 +92,10 @@ function Reports() {
   
     <Container>
     <div className="time">
-    <h2>Reports</h2>
-    {/* <h3 className="d-flex text-content-center">{message}</h3> */}
+      <h2>Reports</h2>
     </div>
     <div className="d-flex justify-content-center mt-2 align-items-baseline">
-    {/* <Form.Control type="text" placeholder="Choose operation" />  */}
+    
     <form onSubmit={handleSubmit} onChange={(e) => {setFilterOperation((e.target.value).toLowerCase())} }>
        <AutoSuggest
           name="Please choose your action..."
