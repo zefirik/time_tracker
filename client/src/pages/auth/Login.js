@@ -16,7 +16,7 @@ function Login({logout}) {
  
   const [loginStatus, setLoginStatus] = useState('');
   const history = useHistory();
-  const {dispatch} = useContext(StoreContext);
+  const {state, dispatch} = useContext(StoreContext);
   
   const dataStorage = (data) => {
     dispatch({ type: "LOGIN", payload: {data} });
@@ -34,18 +34,18 @@ function Login({logout}) {
         localStorage.setItem("token",response.data.token);
         dataStorage(response.data.result)
        
-        //console.log(response.data);
+       
         setLoginStatus(`Hello ${response.data.result.username}!`);
-       // setisAutheticated(true);
+      
         history.push("/user/time");
     };
   });
 };
 
-
-
   return (
-    <>
+    
+    <div>
+      
       <div className="login">
         <h1>Login</h1>
         <FloatingLabel label="Email address">
@@ -55,7 +55,7 @@ function Login({logout}) {
             <Form.Control type="password" placeholder="Password" onChange={(e) => {setPasswordLogin(e.target.value)}}/>
         </FloatingLabel>
         
-        {(localStorage.getItem("token") === null) ? <Button variant="outline-primary" className="my-3" onClick={login}>Login</Button> : <Button variant="outline-primary" className="my-3" onClick={logout}>LogOUT</Button>}
+        {(!state.userData.isAutheticated) ? <Button variant="outline-primary" className="my-3" onClick={login}>Login</Button> : <Button variant="outline-primary" className="my-3" onClick={logout}>LogOUT</Button>}
         <Link to='/auth/registration'>
           <label>Registration</label>
         </Link>
@@ -63,7 +63,7 @@ function Login({logout}) {
       </div>
        
     
-    </>
+    </div>
   );
 }
 

@@ -23,11 +23,27 @@ module.exports.registration = (req, res) => {
 
 // заменить декодер на верификац токена при проверке
 module.exports.decodetoken  = async (req, res) => {
+  try{
       const token = req.body.token; 
-      const body = jwt.decode(token);
-      console.log("body in decodetoken", body);
-      res.send(body);
+      if(!token){return res.status(401);}
+      const verified = jwt.verify(token, process.env.SECRET_TOKEN);
+      console.log("VERIFY ID", verified.id)
+      if (!verified) return res.json(false);
+      await Users.findOne({
+        where:{
+            id: verified.id }
+      })
+      .then(user => {
+        const {id, username} = user;
+          const token = jwt.sign({ id: id, username: username }, process.env.SECRET_TOKEN, {
+              expiresIn:86400  // 24 hours =  86400
+             })
+             res.json({auth: true, token: token, data:user});
+      })
+  } catch (e){
+    res.status(500).json({ error: e.message })
     };
+  };
 
 module.exports.login = (req, res) => { 
     const { email, password } = req.body;

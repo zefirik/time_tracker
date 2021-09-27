@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css';
 import axios from 'axios';
 import Navbar from './components/navbar/Navbar';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
 import Home from './pages/Home';
 import Time from './pages/Time';
 import Reports from './pages/Reports';
@@ -18,11 +18,9 @@ import {reducer, initialState} from './components/storage/store';
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   console.log("TYT STATE",state);
-  
 
   useEffect(() => {
     getFromLocalStorage();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
 
     const dataStorage = (data) => {
@@ -30,7 +28,6 @@ function App() {
     };
 
     let getFromLocalStorage = async () => {
-      if(!localStorage.getItem("token")){return false}
       let result = {};
       console.log("got it");
       const token = await localStorage.getItem("token");
@@ -43,12 +40,13 @@ function App() {
           result = await response.data;
         })
         .then(function () {
-
+          localStorage.setItem("token",result.token);
           console.log("Decoder result", result);
-          return dataStorage(result);
+          return dataStorage(result.data);
         })
         .catch(function (err) {
           console.log(err);
+          logout();
         });
     };
   
@@ -56,6 +54,7 @@ function App() {
     localStorage.clear();
     dispatch({ type: "LOGOUT" });
   };
+  
 
 
   return (
@@ -67,7 +66,7 @@ function App() {
           <Route path='/' exact component={Home} />
           <GuardedRoute path='/user/reports' component={Reports} auth={state.isAutheticated}/>
           <GuardedRoute path='/user/time' component={Time} auth={state.isAutheticated}/>
-          <Route path='/auth/login' component={() => <Login logout={logout}/> } />
+          <Route path='/auth/login' render={() => (state.isAutheticated ?<Redirect to="/user/time" /> :<Login logout={logout}/> )} />
           <Route path='/auth/registration' component={Registration} />
         </Switch>
       </Router>
