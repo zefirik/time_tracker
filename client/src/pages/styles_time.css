@@ -61,3 +61,17 @@
   .table {
     width: 50vw;
   }
+  
+  label {
+    color: white;
+  }
+
+  input {
+    display: flexbox;
+    justify-content: center;
+    
+  }
+
+  .click{
+    height: 6.5vh;
+  }

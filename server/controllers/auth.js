@@ -36,7 +36,7 @@ module.exports.decodetoken  = async (req, res) => {
       .then(user => {
         const {id, username} = user;
           const token = jwt.sign({ id: id, username: username }, process.env.SECRET_TOKEN, {
-              expiresIn:86400  // 24 hours =  86400
+              expiresIn:43200  // 24 hours =  86400
              })
              res.json({auth: true, token: token, data:user});
       })

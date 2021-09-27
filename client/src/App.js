@@ -66,7 +66,7 @@ function App() {
           <Route path='/' exact component={Home} />
           <GuardedRoute path='/user/reports' component={Reports} auth={state.isAutheticated}/>
           <GuardedRoute path='/user/time' component={Time} auth={state.isAutheticated}/>
-          <Route path='/auth/login' render={() => (state.isAutheticated ?<Redirect to="/user/time" /> :<Login logout={logout}/> )} />
+          <Route path='/auth/login' render={() => (state.isAutheticated ? <Redirect to="/user/time" /> : <Login logout={logout}/> )} />
           <Route path='/auth/registration' component={Registration} />
         </Switch>
       </Router>

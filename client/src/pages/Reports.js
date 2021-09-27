@@ -7,14 +7,17 @@ import SecondsToHms from '../components/pagination/secondsToHms';
 import Posts from '../components/pagination/Posts';
 import Pagination from '../components/pagination/Pagination';
 import {StoreContext} from '../components/storage/context';
+import { AutoSuggest } from 'react-autosuggestions';
 
 
-import {Container, Table, Form, Button} from 'react-bootstrap';
+import {Container, Table, Button} from 'react-bootstrap';
 
 
 function Reports() {
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
+  const [cat, setCat] = useState();
+  const catOptions = ['react', 'redux', 'postgresql', 'sql'];
  
   const [reports, setReports] = useState([]);
   const [filterOperation, setFilterOperation] = useState(null);
@@ -67,6 +70,11 @@ function Reports() {
     
   }
   console.log(reports);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setCat();
+  };
  
   return (
   
@@ -75,14 +83,22 @@ function Reports() {
     <h2>Reports</h2>
     {/* <h3 className="d-flex text-content-center">{message}</h3> */}
     </div>
-    <div className="d-flex justify-content-center mt-2 ">
-    <Form.Control type="text" placeholder="Choose operation" onChange={(e) => {setFilterOperation((e.target.value).toLowerCase())} }/> 
-        <Button onClick={findOperation}>
+    <div className="d-flex justify-content-center mt-2 align-items-baseline">
+    {/* <Form.Control type="text" placeholder="Choose operation" />  */}
+    <form onSubmit={handleSubmit} onChange={(e) => {setFilterOperation((e.target.value).toLowerCase())} }>
+       <AutoSuggest
+          name="Please choose your action..."
+          options={catOptions}
+          value={cat}
+          handleChange={setCat}
+        />
+      </form > 
+        <Button className="click" onClick={findOperation}>
           Find
         </Button>
     </div>
-    <div style={{ color: 'white' }} className="my-2">date period</div>
-    <div className="d-flex justify-content-center mb-3">
+    <label className="my-2">date period</label>
+    <div className="mb-3">
     <DatePicker
       dateFormat="yyyy/MM/dd"
       selectsRange={true}
