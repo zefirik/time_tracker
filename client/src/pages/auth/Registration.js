@@ -41,7 +41,7 @@ function Registration() {
         
         <Button variant="outline-primary" className="my-3" onClick={register}>Registration</Button>
         <Link to='/auth/login'>
-          <label>Login</label>
+          Login
         </Link>
   </div>
   );

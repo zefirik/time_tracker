@@ -62,9 +62,6 @@
     width: 50vw;
   }
   
-  label {
-    color: white;
-  }
 
   input {
     display: flexbox;
@@ -74,4 +71,8 @@
 
   .click{
     height: 6.5vh;
+  }
+
+  form label {
+    color: white;
   }

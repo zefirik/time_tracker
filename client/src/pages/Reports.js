@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useEffect, useContext} from 'react';
 import axios from 'axios';
+import "./styles_time.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import SecondsToHms from '../components/pagination/secondsToHms';
@@ -97,7 +98,7 @@ function Reports() {
     </div>
     <div className="d-flex justify-content-center mt-2 align-items-baseline">
     
-    <form onSubmit={handleSubmit} onChange={(e) => {setFilterOperation((e.target.value).toLowerCase())} }>
+    <form  onSubmit={handleSubmit} onChange={(e) => {setFilterOperation((e.target.value).toLowerCase())} }>
        <AutoSuggest
           name="Please choose your action..."
           options={catOptions}
@@ -109,7 +110,7 @@ function Reports() {
           Find
         </Button>
     </div>
-    <label className="my-2">date period</label>
+    <label style={{ color: 'white' }} className="my-2">date period</label>
     <div className="mb-3">
     <DatePicker
       dateFormat="yyyy/MM/dd"

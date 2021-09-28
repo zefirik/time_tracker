@@ -57,7 +57,7 @@ function Login({logout}) {
         
         {(!state.userData.isAutheticated) ? <Button variant="outline-primary" className="my-3" onClick={login}>Login</Button> : <Button variant="outline-primary" className="my-3" onClick={logout}>LogOUT</Button>}
         <Link to='/auth/registration'>
-          <label>Registration</label>
+          Registration
         </Link>
         <h2>{loginStatus}</h2>
       </div>
