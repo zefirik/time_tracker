@@ -1,15 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { SidebarData } from './SidebarData';
 import './Navbar.css';
 import { IconContext } from 'react-icons';
+import {StoreContext} from '../../components/storage/context'
 
-function Navbar() {
+function Navbar({logout}) {
   const [sidebar, setSidebar] = useState(false);
-
   const showSidebar = () => setSidebar(!sidebar);
+
+  const {state} = useContext(StoreContext);
+  const userName = state.userData.data.username ;
+
+ 
+  
 
   return (
     <>
@@ -19,12 +25,19 @@ function Navbar() {
             <FaIcons.FaBars onClick={showSidebar} />
           </Link>
           <div className="nav-auth">
-          <Link to='/login'>
+
+            {userName? <><Link to='/user/reports'><button>{userName}</button> </Link>
+            <Link to='/auth/login'>
+            <button onClick={logout}>Logout</button>
+          </Link></>
+            : <>
+            <Link to='/auth/login'>
             <button >Login</button>
           </Link>
-          <Link to='/registration'>
+          <Link to='/auth/registration'>
           <button>Registration</button>
-          </Link>
+          </Link></>}
+      
           </div>
         </div>
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>

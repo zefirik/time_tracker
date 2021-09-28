@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  web:
+    image: node:16-alpine3.11
+    working_dir: /code
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    container_name: react_time
+    volumes:
+      - ./client:/code/
+    command: npm start
+    depends_on:
+      - pg_db
+      - base
+    restart: always
+  base:
+    image: node:16-alpine3.11
+    ports:
+      - "3001:3001"
+    working_dir: /code
+    volumes:
+      - ./server:/code
+    depends_on:
+      - pg_db
+    container_name: express_time
+    command: npm run server
+    environment:
+      POSTGRES_HOST: pg_db
+    restart: always  
+  pg_db:
+    image: postgres
+    container_name: postgres_time
+    environment:
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=time_nodeDB
+      - PGDATA=/var/lib/postgresql/data/pg_data
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data/pg_data
+    ports:
+      - 5432:5432
+    restart: always
+volumes:
+  database-data:
