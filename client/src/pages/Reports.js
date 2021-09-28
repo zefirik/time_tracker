@@ -92,7 +92,8 @@ function Reports() {
   
     <Container>
     <div className="time">
-      <h2>Reports</h2>
+    <h2>Reports</h2>
+
     </div>
     <div className="d-flex justify-content-center mt-2 align-items-baseline">
     

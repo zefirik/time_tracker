@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from 'axios';
 import "./styles_time.css";
 import {FloatingLabel,
         Form} from 'react-bootstrap';
+import {StoreContext} from '../components/storage/context';
 
 const Timer = () => {
-  const userId = localStorage.getItem('userID');
+  const {state} = useContext(StoreContext);
+  const userId = state.userData.data.id;
   const [second, setSecond] = useState("00");
   const [minute, setMinute] = useState("00");
   const [hour, setHour] = useState("00");

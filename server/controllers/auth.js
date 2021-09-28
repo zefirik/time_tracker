@@ -27,7 +27,7 @@ module.exports.decodetoken  = async (req, res) => {
       const token = req.body.token; 
       if(!token){return res.status(401);}
       const verified = jwt.verify(token, process.env.SECRET_TOKEN);
-      console.log("VERIFY ID", verified.id)
+      //console.log("VERIFY ID", verified.id)
       if (!verified) return res.json(false);
       await Users.findOne({
         where:{
